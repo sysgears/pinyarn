@@ -1,11 +1,12 @@
 {
   "name": "pinyarn",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "pins Yarn to a specific version and downloads it automatically on demand",
   "bin": "bin/pinyarn",
   "files": [
     "bin/**",
     ".pinyarn.js",
+    ".pinyarn.json",
     "*.md"
   ],
   "scripts": {},
