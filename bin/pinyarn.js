@@ -185,32 +185,40 @@ const getClassicUrl = release => {
           searchVersion = pr.head.sha;
         } catch (e) {}
       }
-      const runs = await downloadJson(`https://api.github.com/repos/yarnpkg/berry/actions/workflows/artifacts-workflow.yml/runs?per_page=100`);
-      let foundRun;
-      for (const run of runs.workflow_runs) {
-        if (run.head_sha.startsWith(searchVersion) ||
-            run.head_branch.startsWith(searchVersion) ||
-            run.head_commit.tree_id.startsWith(searchVersion)) {
-          foundRun = run;
-        }
-        if (foundRun) {
-          const artifacts = await downloadJson(foundRun.artifacts_url);
-          let foundArtifact = null;
-          for (const artifact of artifacts.artifacts) {
-            if (artifact.name === 'bundle') {
-              foundArtifact = artifact;
+      let runs;
+      let page = 0;
+      do {
+        runs = await downloadJson(`https://api.github.com/repos/yarnpkg/berry/actions/workflows/artifacts-workflow.yml/runs?per_page=100&page=${page}`);
+        let foundRun;
+        console.log(`Searching through GH action workflow runs page ${page}/${Math.floor(runs.total_count / 100)}...`)
+        for (const run of runs.workflow_runs) {
+          if (run.head_sha.startsWith(searchVersion) ||
+              run.head_branch.startsWith(searchVersion) ||
+              run.head_commit.tree_id.startsWith(searchVersion)) {
+            foundRun = run;
+          }
+          if (foundRun) {
+            const artifacts = await downloadJson(foundRun.artifacts_url);
+            let foundArtifact = null;
+            for (const artifact of artifacts.artifacts) {
+              if (artifact.name === 'bundle') {
+                foundArtifact = artifact;
+                break;
+              }
+            }
+            if (foundArtifact) {
+              yarnVersion = foundRun.head_sha.substring(0, 7);
+              pluginsVersion = yarnVersion;
+              yarnDescription = `${yarnVersion} in ${foundRun.head_branch} '${foundRun.head_commit.message}'`;
+              yarnUrl = foundArtifact.archive_download_url;
               break;
             }
           }
-          if (foundArtifact) {
-            yarnVersion = foundRun.head_sha.substring(0, 7);
-            pluginsVersion = yarnVersion;
-            yarnDescription = `${yarnVersion} in ${foundRun.head_branch} '${foundRun.head_commit.message}'`;
-            yarnUrl = foundArtifact.archive_download_url;
-            break;
-          }
         }
-      }
+        if (foundRun)
+          break;
+        page++;
+      } while (runs.workflow_runs.length === 100);
     }
 
     if (typeof yarnUrl === 'undefined') {
