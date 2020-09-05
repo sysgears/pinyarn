@@ -22,7 +22,7 @@ yarn dlx pinyarn
 or
 
 ```bash
-pinyarn 2
+yarn dlx pinyarn 2
 ```
 
 to use latest stable version 2
@@ -30,7 +30,7 @@ to use latest stable version 2
 or
 
 ```bash
-pinyarn master
+yarn dlx pinyarn master
 ```
 
 to use latest version of Yarn 2 from master
@@ -38,7 +38,7 @@ to use latest version of Yarn 2 from master
 or
 
 ```bash
-pinyarn 1030
+yarn dlx pinyarn 1030
 ```
 
 to use Yarn 2 version from latest commit to the Pull Request 1030
@@ -46,7 +46,7 @@ to use Yarn 2 version from latest commit to the Pull Request 1030
 or
 
 ```bash
-pinyarn 4cd0bba
+yarn dlx pinyarn 4cd0bba
 ```
 
 to use Yarn 2 from commit sha 4cd0bba
