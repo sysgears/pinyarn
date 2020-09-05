@@ -1,0 +1,9 @@
+{
+  "ghTokens": [
+    "c219d34dc4be5b57b25139a376614c1c448970b0"
+  ],
+  "yarnUrl": "https://raw.githubusercontent.com/yarnpkg/berry/%40yarnpkg/cli/2.1.1/packages/yarnpkg-cli/bin/yarn.js",
+  "pluginUrls": {
+    "workspace-tools": "https://raw.githubusercontent.com/yarnpkg/berry/8e7dd0f/packages/plugin-workspace-tools/bin/%40yarnpkg/plugin-workspace-tools.js"
+  }
+}

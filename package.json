@@ -1,0 +1,25 @@
+{
+  "name": "pinyarn",
+  "version": "0.0.1",
+  "description": "pins Yarn to a specific version and downloads it automatically on demand",
+  "bin": "bin/pinyarn",
+  "files": [
+    "bin/**",
+    ".pinyarn.js",
+    "*.md"
+  ],
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sysgears/pinyarn"
+  },
+  "bugs": {
+    "url": "https://github.com/sysgears/pinyarn/issues"
+  },
+  "keywords": [
+    "yarn",
+    "pin"
+  ],
+  "author": "Victor Vlasenko <victor.vlasenko@sysgears.com>",
+  "license": "MIT"
+}
