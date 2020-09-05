@@ -11,10 +11,10 @@ const getUrlHash = url => crypto.createHash('sha256').update(url).digest('hex').
 
 const YARN_URL_HASH = getUrlHash(config.yarnUrl);
 let BERRY_HEADERS = {
-  'User-Agent': `curl/7.54.0`
+  'User-Agent': `pinyarn/?`
 };
 if (config.yarnUrl.includes('/artifacts/')) {
-  BERRY_HEADERS['Authorization'] = `token ${config.ghTokens[Math.floor(Math.random(config.ghTokens.length))]}`;
+  BERRY_HEADERS['Authorization'] = `token ${config.ghTokens[Math.floor(Math.random(config.ghTokens.length))].join('')}`;
 }
 const YARNRC_YML_PATH = path.join(__dirname, '.yarnrc.yml');
 const PLUGIN_LIST = !fs.existsSync(YARNRC_YML_PATH) ? [] : fs.readFileSync(YARNRC_YML_PATH, 'utf-8')

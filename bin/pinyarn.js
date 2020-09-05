@@ -59,8 +59,8 @@ let newYarnrc = yarnrc;
 let pinyarn = fs.existsSync(PINYARN) ? fs.readFileSync(PINYARN, 'utf-8') : '';
 let newPinyarn = fs.readFileSync(path.join(__dirname, '..', PINYARN), 'utf-8');
 const REST_HEADERS = {
-  'User-Agent': `curl/7.54.0`,
-  'Authorization': `token ${newPinyarnJson.ghTokens[Math.floor(Math.random(newPinyarnJson.ghTokens.length))]}`
+  'User-Agent': `pinyarn/?`,
+  'Authorization': `token ${newPinyarnJson.ghTokens[Math.floor(Math.random(newPinyarnJson.ghTokens.length))].join('')}`
 };
 
 const downloadText = async (url, headers) => {
@@ -142,7 +142,7 @@ const getClassicUrl = release => {
         yarnUrl = getClassicUrl(release);
       }
     } else if (argVersion === '2' || argVersion === 'berry' || argVersion.startsWith('2.')) {
-      const gitRefs = await downloadText(`${BERRY_GIT_URL}/info/refs?service=git-upload-pack`, {'User-Agent': 'git/2.21.1'});
+      const gitRefs = await downloadText(`${BERRY_GIT_URL}/info/refs?service=git-upload-pack`, {'User-Agent': 'pinyarn/?'});
       for (const line of gitRefs.split('\n')) {
         const len = parseInt(line.substring(0, 4), 16);
         if (len === 0)
@@ -178,21 +178,20 @@ const getClassicUrl = release => {
         yarnUrl = getBerryUrl(yarnVersion);
       }
     } else {
-      const runs = await downloadJson(`https://api.github.com/repos/yarnpkg/berry/actions/workflows/artifacts-workflow.yml/runs`);
+      let searchVersion = argVersion;
+      if (/^[0-9]+$/.test(argVersion)) {
+        try {
+          const pr = await downloadJson(`https://api.github.com/repos/yarnpkg/berry/pulls/${argVersion}`);
+          searchVersion = pr.head.sha;
+        } catch (e) {}
+      }
+      const runs = await downloadJson(`https://api.github.com/repos/yarnpkg/berry/actions/workflows/artifacts-workflow.yml/runs?per_page=100`);
       let foundRun;
-      // https://raw.githubusercontent.com/yarnpkg/berry/a806c88f5e4a32d50629d6bfc6d1275c8b1352a5/packages/plugin-workspace-tools/bin/%40yarnpkg/plugin-workspace-tools.js
       for (const run of runs.workflow_runs) {
-        if (run.head_sha.startsWith(argVersion) ||
-            run.head_branch.startsWith(argVersion) ||
-            run.head_commit.tree_id.startsWith(argVersion) ||
-            run.head_commit.message.endsWith(`(#${argVersion})`)) {
+        if (run.head_sha.startsWith(searchVersion) ||
+            run.head_branch.startsWith(searchVersion) ||
+            run.head_commit.tree_id.startsWith(searchVersion)) {
           foundRun = run;
-        }
-        for (pr of (run.pull_requests || [])) {
-          if (pr.number === +argVersion) {
-            foundRun = run;
-            break;
-          }
         }
         if (foundRun) {
           const artifacts = await downloadJson(foundRun.artifacts_url);

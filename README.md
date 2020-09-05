@@ -59,9 +59,8 @@ generates two files:
   - `.pinyarn.json` - configuration file with URLs and GitHub access tokens having public_repo permission
 
 GitHub access tokens used only when you use unreleased Yarn 2 version from GitHub Actions build artifacts. You can generate your own list of GitHub access tokens, the
-only requirement to them is that they have `public_repo` permission. `.yarnrc.js` will
-pick the token from the list at random each time it will be needed to lower down chance
-of GitHub request throttling.
+only requirement to them is that they have `public_repo` permission. Please
+note that each token must be split into two or more pieces to prevent GitHub to autorevoke it. `.yarnrc.js` will pick the token from the list at random each time it will be needed to lower down chance of GitHub request throttling.
 
 `pinyarn` modifies your `.yarnrc.yml` by setting `yarnPath` to point to `.pinyarn.js`. Each time Yarn is run it launches the script pointed to by `yarnPath`. `.pinyarn.js`
 thus receives the control first and checks whether correct version of Yarn and plugins have been downloaded and if not downloads them, removes incorrect versions if any and
