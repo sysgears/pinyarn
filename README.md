@@ -1,4 +1,4 @@
-## Pinyarn
+## pinyarn
 
 [![npm version](https://badge.fury.io/js/pinyarn.svg)](https://badge.fury.io/js/pinyarn)
 [![Twitter Follow](https://img.shields.io/twitter/follow/sysgears.svg?style=social)](https://twitter.com/sysgears)
