@@ -184,7 +184,7 @@ const getClassicUrl = release => {
       do {
         runs = await downloadJson(`https://api.github.com/repos/yarnpkg/berry/actions/workflows/artifacts-workflow.yml/runs?per_page=100&page=${page}`);
         let foundRun;
-        console.log(`Searching through GH action workflow runs page ${page}/${Math.floor(runs.total_count / 100)}...`)
+        console.log(`Searching through GH action workflow runs page ${page}/${Math.ceil(runs.total_count / 100)}...`)
         for (const run of runs.workflow_runs) {
           if (run.head_sha.startsWith(searchVersion) ||
               run.head_branch.startsWith(searchVersion) ||
