@@ -49,6 +49,7 @@ if (fs.existsSync(PINYARN_JSON)) {
 }
 if (!pinyarnJson) {
   pinyarnJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', PINYARN_JSON), 'utf8'));
+  delete pinyarnJson.pluginUrls;
 }
 let newPinyarnJson = JSON.parse(JSON.stringify(pinyarnJson));
 newPinyarnJson.pluginUrls = newPinyarnJson.pluginUrls || {};
