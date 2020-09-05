@@ -14,7 +14,7 @@ let BERRY_HEADERS = {
   'User-Agent': `pinyarn/?`
 };
 if (config.yarnUrl.includes('/artifacts/')) {
-  BERRY_HEADERS['Authorization'] = `token ${config.ghTokens[Math.floor(Math.random(config.ghTokens.length))].join('')}`;
+  BERRY_HEADERS['Authorization'] = `token ${config.ghTokens[Math.floor(Math.random() * config.ghTokens.length)].join('')}`;
 }
 const YARNRC_YML_PATH = path.join(__dirname, '.yarnrc.yml');
 const PLUGIN_LIST = !fs.existsSync(YARNRC_YML_PATH) ? [] : fs.readFileSync(YARNRC_YML_PATH, 'utf-8')

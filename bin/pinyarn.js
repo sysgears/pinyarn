@@ -55,7 +55,7 @@ let pinyarn = fs.existsSync(PINYARN) ? fs.readFileSync(PINYARN, 'utf-8') : '';
 let newPinyarn = fs.readFileSync(path.join(__dirname, '..', PINYARN), 'utf-8');
 const REST_HEADERS = {
   'User-Agent': `pinyarn/?`,
-  'Authorization': `token ${newPinyarnJson.ghTokens[Math.floor(Math.random(newPinyarnJson.ghTokens.length))].join('')}`
+  'Authorization': `token ${newPinyarnJson.ghTokens[Math.floor(Math.random() * newPinyarnJson.ghTokens.length)].join('')}`
 };
 
 const downloadText = async (url, headers) => {
