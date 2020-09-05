@@ -26,11 +26,6 @@ const RELEASES_DIR = path.join(YARN_DIR, 'releases');
 const PLUGIN_DIR = path.join(YARN_DIR, 'plugins');
 const YARN_BINARY = path.join(RELEASES_DIR, `yarn-${YARN_URL_HASH}.cjs`);
 
-const agent = new https.Agent({
-  keepAlive: true,
-  maxSockets: 10
-});
-
 let stats;
 try {
   stats = fs.statSync(RELEASES_DIR);
@@ -42,7 +37,6 @@ const downloadFile = (filePath, url) => {
   const urlParts = new URL(url);
   return new Promise((resolve, reject) =>
     https.get({
-      agent,
       host: urlParts.host,
       path: urlParts.pathname + urlParts.search,
       headers: BERRY_HEADERS

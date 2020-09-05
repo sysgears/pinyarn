@@ -6,11 +6,6 @@ const path = require('path');
 const { fstat } = require('fs');
 const { runInNewContext } = require('vm');
 
-const agent = new https.Agent({
-  keepAlive: true,
-  maxSockets: 10
-});
-
 const YARNRC = `.yarnrc.yml`;
 const PINYARN = `.pinyarn.js`;
 const PINYARN_JSON = `.pinyarn.json`;
@@ -68,7 +63,6 @@ const downloadText = async (url, headers) => {
     const urlParts = new URL(url);
 
     https.get({
-      agent,
       host: urlParts.host,
       path: urlParts.pathname + urlParts.search,
       headers
