@@ -10,7 +10,7 @@ const YARNRC = `.yarnrc.yml`;
 const PINYARN = `.pinyarn.js`;
 const PINYARN_JSON = `.pinyarn.json`;
 const PACKAGE_JSON = `package.json`;
-const BERRY_GIT_URL = `https://github.com/yarnpkg/berry`;
+const BERRY_GIT_URL = `https://github.com/yarnpkg/berry.git`;
 
 const args = process.argv;
 
