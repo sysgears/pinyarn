@@ -1,6 +1,6 @@
 {
   "name": "pinyarn",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "pins Yarn to a specific version and downloads it automatically on demand",
   "bin": "./bin/pinyarn.js",
   "files": [
