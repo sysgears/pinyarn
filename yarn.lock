@@ -8,6 +8,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pinyarn@workspace:."
   bin:
-    pinyarn: bin/pinyarn
+    pinyarn: ./bin/pinyarn.js
   languageName: unknown
   linkType: soft
