@@ -28,6 +28,7 @@ if (args.includes('-h') || args.includes('--help')) {
   console.log(`    - Yarn 2 commit sha or branch name: 95af161 or master or ...`);
   console.log();
   console.log(`Supported options:`);
+  console.log(`  -n do not generate download script, donwload bundle and plugins only`);
   console.log(`  -h --help prints this help`);
 }
 
@@ -245,7 +246,7 @@ const getClassicUrl = release => {
     }
 
     if (!fs.existsSync(PINYARN)) {
-      newYarnrc = newYarnrc.replace(/(yarnPath:[\s^\n]*)([^\n]*)\n?/, `$1.pinyarn\n`);
+      newYarnrc = newYarnrc.replace(/(yarnPath:[\s^\n]*)([^\n]*)\n?/, `$1.pinyarn.js\n`);
     }
 
     if (newYarnrc !== yarnrc) {
