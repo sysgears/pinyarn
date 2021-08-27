@@ -23,9 +23,9 @@ if (args.includes('-h') || args.includes('--help')) {
   console.log();
   console.log(`Supported yarn version formats:`);
   console.log(`    - exact version: 0.14.1 or 2.1.1 or ...`);
-  console.log(`    - latest stable: 1 or classic - latest stable Yarn classic version; 2 or berry - latest stable Yarn 2 version`);
-  console.log(`    - Yarn 2 pull request number: 1030 or 1031 or ..., the head commit at the PR will be pinned`);
-  console.log(`    - Yarn 2 commit sha or branch name: 95af161 or master or ...`);
+  console.log(`    - latest stable: 1 or classic - latest stable Yarn classic version; 2 or berry - latest stable Yarn 2+ version`);
+  console.log(`    - Yarn 2+ pull request number: 1030 or 1031 or ..., the head commit at the PR will be pinned`);
+  console.log(`    - Yarn 2+ commit sha or branch name: 95af161 or master or ...`);
   console.log();
   console.log(`Supported options:`);
   console.log(`  -n do not generate download script, donwload bundle and plugins only`);
@@ -184,10 +184,11 @@ const getClassicUrl = release => {
       }
       let runs;
       let page = 0;
+      let perPage = 10;
       do {
-        runs = await downloadJson(`https://api.github.com/repos/yarnpkg/berry/actions/workflows/artifacts-workflow.yml/runs?per_page=100&page=${page}`);
+        runs = await downloadJson(`https://api.github.com/repos/yarnpkg/berry/actions/workflows/integration-workflow.yml/runs?per_page=${perPage}&page=${page}`);
+        console.log(`Searching through GH action workflow runs page ${page}/${Math.ceil(runs.total_count / perPage)}...`)
         let foundRun;
-        console.log(`Searching through GH action workflow runs page ${page}/${Math.ceil(runs.total_count / 100)}...`)
         for (const run of runs.workflow_runs) {
           if (run.head_sha.startsWith(searchVersion) ||
               run.head_branch.startsWith(searchVersion) ||
@@ -198,7 +199,7 @@ const getClassicUrl = release => {
             const artifacts = await downloadJson(foundRun.artifacts_url);
             let foundArtifact = null;
             for (const artifact of artifacts.artifacts) {
-              if (artifact.name === 'bundle') {
+              if (artifact.name === 'bundle' || artifact.name == 'yarn-artifacts') {
                 foundArtifact = artifact;
                 break;
               }
