@@ -138,7 +138,7 @@ const getClassicUrl = release => {
         yarnVersion = release.tag_name.substring(1);
         yarnUrl = getClassicUrl(release);
       }
-    } else if (argVersion === '2' || argVersion === 'berry' || argVersion.startsWith('2.')) {
+    } else if (['2', '3'].indexOf(argVersion) >= 0 || argVersion === 'berry' || argVersion.startsWith('2.') || argVersion.startsWith('3.')) {
       const gitRefs = await downloadText(`${BERRY_GIT_URL}/info/refs?service=git-upload-pack`, {'User-Agent': 'pinyarn/?'});
       for (const line of gitRefs.split('\n')) {
         const len = parseInt(line.substring(0, 4), 16);
@@ -152,7 +152,7 @@ const getClassicUrl = release => {
       }
       const sortedTags = Array.from(berryTags.keys()).sort();
       let foundTag;
-      if (argVersion === '2' || argVersion === 'berry') {
+      if (['2', '3'].indexOf(argVersion) >= 0 || argVersion === 'berry') {
         for (const tag of sortedTags.reverse()) {
           if (tag.startsWith(`refs/tags/@yarnpkg/cli/`)) {
             foundTag = tag;
@@ -216,7 +216,7 @@ const getClassicUrl = release => {
         if (foundRun)
           break;
         page++;
-      } while (runs.workflow_runs.length === 100);
+      } while (runs.workflow_runs.length === perPage);
     }
 
     if (typeof yarnUrl === 'undefined') {
