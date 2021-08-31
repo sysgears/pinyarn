@@ -10,7 +10,6 @@ const { runInNewContext } = require('vm');
 
 const YARNRC = `.yarnrc.yml`;
 const PINYARN = `.pinyarn.js`;
-const PINYARN_JSON = `.pinyarn.json`;
 const PACKAGE_JSON = `package.json`;
 const BERRY_GIT_URL = `https://github.com/yarnpkg/berry.git`;
 
@@ -40,13 +39,15 @@ if (!fs.existsSync(PACKAGE_JSON)) {
 let yarnUrl;
 
 let pinyarnJson;
-if (fs.existsSync(PINYARN_JSON)) {
+// Migrate from split config
+if (fs.existsSync('.pinyarn.json')) {
   try {
-    pinyarnJson = JSON.parse(fs.readFileSync(PINYARN_JSON, 'utf8'));
+    pinyarnJson = JSON.parse(fs.readFileSync('.pinyarn.json', 'utf8'));
+    fs.unlinkSync('.pinyarn.json');
   } catch (e) {}
 }
 if (!pinyarnJson) {
-  pinyarnJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', PINYARN_JSON), 'utf8'));
+  pinyarnJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', PINYARN), 'utf8').match(/const config = ({[^}]+})/)[1]);
   delete pinyarnJson.pluginUrls;
 }
 let newPinyarnJson = JSON.parse(JSON.stringify(pinyarnJson));
@@ -117,7 +118,7 @@ const getClassicUrl = release => {
       const yarn = cp.spawnSync('yarn', ['--version'], { encoding: 'utf-8' });
       argVersion = yarn.stdout.trim();
       if (argVersion.includes('git.')) {
-        argVersion = argVersion.substring(argVersion.lastIndexOf('.') + 1);
+        argVersion = argVersion.substring(argVersion.lastIndexOf('.') + 1).replace('hash-', '');
       }
     } else {
       argVersion = process.argv[2];
@@ -254,12 +255,10 @@ const getClassicUrl = release => {
       fs.writeFileSync(YARNRC, newYarnrc);
     }
 
+    newPinyarn = newPinyarn.replace(/const config = {[^}]+};/, `const config = ${JSON.stringify(newPinyarnJson, null, 2)};`)
+
     if (newPinyarn !== pinyarn) {
       fs.writeFileSync(PINYARN, newPinyarn);
-    }
-
-    if (JSON.stringify(newPinyarnJson) !== JSON.stringify(pinyarnJson)) {
-      fs.writeFileSync(PINYARN_JSON, JSON.stringify(newPinyarnJson, null, 2));
     }
   } catch (e) {
     console.error(e);
