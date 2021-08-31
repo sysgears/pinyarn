@@ -47,7 +47,7 @@ if (fs.existsSync('.pinyarn.json')) {
   } catch (e) {}
 }
 if (!pinyarnJson) {
-  pinyarnJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', PINYARN), 'utf8').match(/const config = ({[^}]+})/)[1]);
+  pinyarnJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', PINYARN), 'utf8').match(/const config = ({[^;]+});/)[1]);
   delete pinyarnJson.pluginUrls;
 }
 let newPinyarnJson = JSON.parse(JSON.stringify(pinyarnJson));
@@ -255,7 +255,7 @@ const getClassicUrl = release => {
       fs.writeFileSync(YARNRC, newYarnrc);
     }
 
-    newPinyarn = newPinyarn.replace(/const config = {[^}]+};/, `const config = ${JSON.stringify(newPinyarnJson, null, 2)};`)
+    newPinyarn = newPinyarn.replace(/const config = {[^;]+;/, `const config = ${JSON.stringify(newPinyarnJson, null, 2)};`)
 
     if (newPinyarn !== pinyarn) {
       fs.writeFileSync(PINYARN, newPinyarn);
