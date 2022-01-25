@@ -1,6 +1,6 @@
 {
   "name": "pinyarn",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "pins Yarn to a specific version and downloads it automatically on demand",
   "bin": "./bin/pinyarn.js",
   "files": [
@@ -9,7 +9,6 @@
     ".pinyarn.json",
     "*.md"
   ],
-  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/sysgears/pinyarn"
