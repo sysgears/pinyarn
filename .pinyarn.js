@@ -21,7 +21,7 @@ const config = {
       "7dvv4UhJhdhbXSKkcGnjCNtUBFznY1vDhx4"
     ]
   ],
-  "yarnUrl": "https://raw.githubusercontent.com/yarnpkg/berry/%40yarnpkg/cli/3.0.1/packages/yarnpkg-cli/bin/yarn.js"
+  "yarnUrl": "https://raw.githubusercontent.com/yarnpkg/berry/%40yarnpkg/cli/3.2.0-rc.9/packages/yarnpkg-cli/bin/yarn.js"
 };
 
 const getUrlHash = url => crypto.createHash('sha256').update(url).digest('hex').substring(0, 8);
@@ -93,10 +93,9 @@ const downloadFile = (filePath, url) => {
             .on('error', err => {
               reject(err);
             })
-            .on('end', () => {
-              file.end();
-              resolve();
-            });
+            .on('end', () => file.end());
+          file
+            .on('finish', resolve);
         }
       }
     }).on('error', reject)
