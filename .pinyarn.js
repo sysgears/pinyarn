@@ -9,17 +9,9 @@ const { PassThrough } = require('stream');
 const config = {
   "ghTokens": [
     [
-      "ghp_H",
-      "bcraD8d0OUWoxJdIlgNLNXpyhzS7n1HutiA"
+      "github_pat_"
+      "11AAJTTFQ0REJCNOIAnP5j_f7uJsYJPDzc0vBxTK5HnKH6Vi0UpqPjvmMuK28AQKFDD5DV2J2E3Mim8CQ4"
     ],
-    [
-      "ghp_9",
-      "HV9r3y93wz0unBeT1SyeILnFZxUzz3dBdrA"
-    ],
-    [
-      "ghp_r",
-      "7dvv4UhJhdhbXSKkcGnjCNtUBFznY1vDhx4"
-    ]
   ],
   "yarnUrl": "https://raw.githubusercontent.com/yarnpkg/berry/%40yarnpkg/cli/3.0.0/packages/yarnpkg-cli/bin/yarn.js"
 };
