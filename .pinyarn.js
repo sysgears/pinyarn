@@ -11,7 +11,7 @@ const config = {
     [
       "github_pat_",
       "11AAJTTFQ0REJCNOIAnP5j_f7uJsYJPDzc0vBxTK5HnKH6Vi0UpqPjvmMuK28AQKFDD5DV2J2E3Mim8CQ4"
-    ],
+    ]
   ],
   "yarnUrl": "https://raw.githubusercontent.com/yarnpkg/berry/%40yarnpkg/cli/3.0.0/packages/yarnpkg-cli/bin/yarn.js"
 };
