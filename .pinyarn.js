@@ -9,7 +9,7 @@ const { PassThrough } = require('stream');
 const config = {
   "ghTokens": [
     [
-      "github_pat_"
+      "github_pat_",
       "11AAJTTFQ0REJCNOIAnP5j_f7uJsYJPDzc0vBxTK5HnKH6Vi0UpqPjvmMuK28AQKFDD5DV2J2E3Mim8CQ4"
     ],
   ],
