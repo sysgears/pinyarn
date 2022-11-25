@@ -139,7 +139,7 @@ const getClassicUrl = release => {
         yarnVersion = release.tag_name.substring(1);
         yarnUrl = getClassicUrl(release);
       }
-    } else if (['2', '3'].indexOf(argVersion) >= 0 || argVersion === 'berry' || argVersion.startsWith('2.') || argVersion.startsWith('3.')) {
+    } else if (argVersion.search(/[2-9]/) === 0 || argVersion === 'berry') {
       const gitRefs = await downloadText(`${BERRY_GIT_URL}/info/refs?service=git-upload-pack`, {'User-Agent': 'pinyarn/?'});
       for (const line of gitRefs.split('\n')) {
         const len = parseInt(line.substring(0, 4), 16);
@@ -151,9 +151,34 @@ const getClassicUrl = release => {
           continue;
         berryTags.set(ref.replace('^{}', ''), sha);
       }
-      const sortedTags = Array.from(berryTags.keys()).sort();
+      const versionRegex = /.*(\d+)\.(\d+)\.(\d+)(?:-rc\.(\d+))?$/;
+      const sortedTags = Array.from(berryTags.keys()).sort((key1, key2) => {
+        const version1 = key1.match(versionRegex);
+        const version2 = key2.match(versionRegex);
+        if (version1 === null && version2 === null) {
+          return version1 - version2;
+        } else if (version2 === null) {
+          return 1;
+        } else if (version1 === null) {
+          return -1;
+        }
+
+        for (let idx = 1; idx <= 3; idx++) {
+          if (version1[idx] !== version2[idx]) {
+            return parseInt(version1[idx]) - parseInt(version2[idx]);
+          }
+        }
+
+        if (version1[4] && !version2[4]) {
+          return 1;
+        } else if (version2[4] && !version1[4]) {
+          return -1;
+        }
+
+        return parseInt(version1[4]) - parseInt(version2[4]);
+      });
       let foundTag;
-      if (['2', '3'].indexOf(argVersion) >= 0 || argVersion === 'berry') {
+      if (argVersion.search(/[2-9]/) === 0 || argVersion === 'berry') {
         for (const tag of sortedTags.reverse()) {
           if (tag.startsWith(`refs/tags/@yarnpkg/cli/`)) {
             foundTag = tag;
